@@ -30,7 +30,7 @@ Well, there already are a few of programming languages in which one can access
 lists from their end, rather than from the beginning.
 
 * Some of them use a negative index (e.g. Python, Perl) like `a[-2]`. It's 
-not safe way though, because this approach may disguised an error of violating 
+not safe way though, because this approach may disguise an error of violating 
 lists' range.
 * The others use a special keyword or a symbol (e.g. Tcl, Matlab, Julia, D) 
 like `a[end-1]`. It's a good option, although it requires support from the 
