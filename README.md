@@ -3,24 +3,26 @@
 This is an attempt to rethink the concept of list indexing, implemented in 
 Haskell. Here are some examples (do `cabal install` before it):
 
-    Prelude> import Data.Index
-    Prelude Data.Index> import Data.List.Index as LI
-    Prelude Data.Index LI> [1..7] LI.!! 1
-    2
-    Prelude Data.Index LI> [1..7] LI.!! end
-    7
-    Prelude Data.Index LI> [1..7] LI.!! (end-2)
-    5
-    Prelude Data.Index LI> [1..7] LI.!! mid
-    4
-    Prelude Data.Index LI> LI.drop 13 ['a'..'z']
-    "nopqrstuvwxyz"
-    Prelude Data.Index LI> LI.drop mid ['a'..'z']
-    "nopqrstuvwxyz"
-    Prelude Data.Index LI> LI.splitAt mid "Hello World!"
-    ("Hello ","World!")
-    Prelude Data.Index LI> LI.splitAt (mid - 1) "Hello World!"
-    ("Hello"," World!")
+```haskell
+Prelude> import Data.Index
+Prelude Data.Index> import Data.List.Index as LI
+Prelude Data.Index LI> [1..7] LI.!! 1
+2
+Prelude Data.Index LI> [1..7] LI.!! end
+7
+Prelude Data.Index LI> [1..7] LI.!! (end-2)
+5
+Prelude Data.Index LI> [1..7] LI.!! mid
+4
+Prelude Data.Index LI> LI.drop 13 ['a'..'z']
+"nopqrstuvwxyz"
+Prelude Data.Index LI> LI.drop mid ['a'..'z']
+"nopqrstuvwxyz"
+Prelude Data.Index LI> LI.splitAt mid "Hello World!"
+("Hello ","World!")
+Prelude Data.Index LI> LI.splitAt (mid - 1) "Hello World!"
+("Hello"," World!")
+```
 
 # Why would someone need this?
 
@@ -51,22 +53,28 @@ must be defined in a list-independent way. These are examples of such
 *places*: the third element from the beginning, the second element from the 
 end, the middle. Well, that's how it can be done:
 
-    newtype Index i = Index (forall a . [a] -> i)
-    idx   = Index (\t -> 2)                -- third element from the beginning
-    idx'  = Index (\t -> length t - 2)     -- second element from the end
-    idx'' = Index (\t -> length t `div` 2) -- the middle
+```haskell
+newtype Index i = Index (forall a . [a] -> i)
+idx   = Index (\t -> 2)                -- third element from the beginning
+idx'  = Index (\t -> length t - 2)     -- second element from the end
+idx'' = Index (\t -> length t `div` 2) -- the middle
+```
 
 One can notice that with such a definition, `Index` turns out to be something 
 very similar to `Reader`, saving `forall`. Furthermore, "classical" indices 
 from the beginning become `pure` indices, in virtue of
     
-    pure i = Index (const i)
+```haskell
+pure i = Index (const i)
+```
 
 New `Index` is `Num` instance as well, allowing using not only `t !!  end`, 
 but also `t !! (end-2)` or `t !! 1`, due to
 
-    (-) = liftA2 (-)
-    fromInteger = pure . fromInteger
+```haskell
+(-) = liftA2 (-)
+fromInteger = pure . fromInteger
+```
 
 # Manual redefining
 
@@ -75,9 +83,11 @@ The only problem is to make functions to work with new `Index` instead of
 function via do-notation, because I don't know how to do it better. Container 
 polymorphism is also done, so the actual definition of `Index` is:
 
-    newtype Index t i = Index {runIndex :: forall a . t a -> i}
+```haskell
+newtype Index t i = Index {runIndex :: forall a . t a -> i}
+```
 
 Therefore, for each necessary container `t` corresponding functions working 
 with indices as `Int` have to be redefined to functions working with `Index t 
 Int`. Until now this is done for `Data.List` and `Data.Sequence`, but it's 
-easy to implement `Index` for any linear container, e.g. Vector.
+easy to implement `Index` for any linear container, e.g. `Vector`.
