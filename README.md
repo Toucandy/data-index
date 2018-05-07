@@ -4,23 +4,22 @@ This is an attempt to rethink the concept of list indexing, implemented in
 Haskell. Here are some examples (do `cabal install` before it):
 
 ```haskell
-Prelude> import Data.Index
-Prelude Data.Index> import Data.List.Index as LI
-Prelude Data.Index LI> [1..7] LI.!! 1
+Prelude> import Data.List.Index as LI
+Prelude LI> [1..7] LI.!! 1
 2
-Prelude Data.Index LI> [1..7] LI.!! end
+Prelude LI> [1..7] LI.!! end
 7
-Prelude Data.Index LI> [1..7] LI.!! (end-2)
+Prelude LI> [1..7] LI.!! (end-2)
 5
-Prelude Data.Index LI> [1..7] LI.!! mid
+Prelude LI> [1..7] LI.!! mid
 4
-Prelude Data.Index LI> LI.drop 13 ['a'..'z']
+Prelude LI> LI.drop 13 ['a'..'z']
 "nopqrstuvwxyz"
-Prelude Data.Index LI> LI.drop mid ['a'..'z']
+Prelude LI> LI.drop mid ['a'..'z']
 "nopqrstuvwxyz"
-Prelude Data.Index LI> LI.splitAt mid "Hello World!"
+Prelude LI> LI.splitAt mid "Hello World!"
 ("Hello ","World!")
-Prelude Data.Index LI> LI.splitAt (mid - 1) "Hello World!"
+Prelude LI> LI.splitAt (mid - 1) "Hello World!"
 ("Hello"," World!")
 ```
 

@@ -1,5 +1,8 @@
 -- | Redefined index-related functions for Data.List
-module Data.List.Index where
+module Data.List.Index (
+    module Data.Index,
+    module Data.List.Index
+    ) where
 
 import Data.Index
 import Prelude hiding ((!!), take, drop, splitAt)

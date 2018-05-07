@@ -1,5 +1,8 @@
 -- | Redefined index-related functions for Data.Sequence
-module Data.Sequence.Index where
+module Data.Sequence.Index (
+    module Data.Index,
+    module Data.Sequence.Index
+    ) where
 
 import Data.Index
 import Prelude hiding (take, drop, splitAt)
