@@ -44,14 +44,14 @@ the syntax
 2. Not only an access from the end of a list is added, but also an access from 
 any user-defined place, i.e. from the middle.
 
-# How is is done?
+# How is this done?
 
 The concept of a list index was invented anew. What is an access to a list by 
 index anyway? Well, this is a function of two arguments that takes a list and 
 a some abstract *place*, and returns a value from the *place*. This *place* 
 must be defined in a list-independent way. These are examples of such 
 *places*: the third element from the beginning, the second element from the 
-end, the middle. Well, that's how it can be done:
+end, the middle. That's how it can be done:
 
 ```haskell
 newtype Index i = Index (forall a . [a] -> i)
@@ -61,8 +61,8 @@ idx'' = Index (\t -> length t `div` 2) -- the middle
 ```
 
 One can notice that with such a definition, `Index` turns out to be something 
-very similar to `Reader`, saving `forall`. Furthermore, "classical" indices 
-from the beginning become `pure` indices, in virtue of
+very similar to `Reader` monad, saving `forall`. Furthermore, "classical" 
+indices from the beginning become `pure` indices, in virtue of
     
 ```haskell
 pure i = Index (const i)
@@ -76,7 +76,7 @@ but also `t !! (end-2)` or `t !! 1`, due to
 fromInteger = pure . fromInteger
 ```
 
-# Manual redefining
+# Functions redefining
 
 The only problem is to make functions to work with new `Index` instead of 
 `Int`. At present this is getting done by manual redefining each needed 
