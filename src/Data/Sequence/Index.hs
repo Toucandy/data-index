@@ -1,3 +1,5 @@
+{-# LANGUAGE ApplicativeDo #-}
+
 -- | Redefined index-related functions for Data.Sequence
 module Data.Sequence.Index (
     module Data.Index,

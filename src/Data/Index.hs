@@ -13,18 +13,14 @@ newtype Index t i = Index {runIndex :: forall a . t a -> i}
 run :: t a -> Index t i -> i
 run = flip runIndex
 
--- | Reader-like Monad instance
-instance Monad (Index t) where
-    idx >>= f = Index $ \t -> run t $ f $ run t idx
-
 -- | Reader-like Applicative instance
 instance Applicative (Index t) where
     pure i = Index (const i)
-    (<*>) = ap
+    f <*> idx = Index $ \t -> run t f $ run t idx
 
 -- | Reader-like Functor instance
 instance Functor (Index t) where
-    fmap = ap . return
+    fmap = liftA
 
 -- | Num instance is done via 'liftA2' and 'pure'
 instance Num i => Num (Index t i) where
